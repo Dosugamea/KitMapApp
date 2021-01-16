@@ -14,6 +14,7 @@ import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
+
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {

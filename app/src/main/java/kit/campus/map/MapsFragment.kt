@@ -1,9 +1,12 @@
 package kit.campus.map
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -11,21 +14,52 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
+
 class MapsFragment : Fragment() {
 
+    private val placeList = mapOf(
+        "1号館" to LatLng(36.530205162894134, 136.62784554138173)
+    )
+
     private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        if (
+            context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
+            && context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                1
+            )
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                2
+            )
+        } else {
+            googleMap.setMyLocationEnabled(true)
+        }
+        placeList.forEach { (k, v) ->
+            googleMap.addMarker(
+                MarkerOptions()
+                    .position(v)
+                    .title(k)
+            )
+        }
+        googleMap.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                LatLng(36.530205162894134, 136.62784554138173),
+                17.0f
+            )
+        )
     }
 
     override fun onCreateView(
