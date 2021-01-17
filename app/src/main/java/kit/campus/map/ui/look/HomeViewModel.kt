@@ -1,4 +1,4 @@
-package kit.campus.map.ui.home
+package kit.campus.map.ui.look
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

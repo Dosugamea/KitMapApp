@@ -1,4 +1,4 @@
-package kit.campus.map.ui.slideshow
+package kit.campus.map.ui.facility
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -1,6 +1,8 @@
-package kit.campus.map
+package kit.campus.map.ui.map
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,14 +15,17 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kit.campus.map.PlaceInfoActivity
+import kit.campus.map.R
 
 
-class MapsFragment : Fragment() {
+class ListByMapFragment : Fragment() {
 
     private val placeList = mapOf(
         "1号館" to LatLng(36.530205162894134, 136.62784554138173)
     )
 
+    @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
         if (
             context?.let {
@@ -45,7 +50,7 @@ class MapsFragment : Fragment() {
                 2
             )
         } else {
-            googleMap.setMyLocationEnabled(true)
+            googleMap.isMyLocationEnabled = true
         }
         placeList.forEach { (k, v) ->
             googleMap.addMarker(
@@ -60,6 +65,13 @@ class MapsFragment : Fragment() {
                 17.0f
             )
         )
+        googleMap.setOnMarkerClickListener { marker ->
+            val venueID = marker.id
+            val venueName = marker.title
+            val intent = Intent(activity, PlaceInfoActivity::class.java)
+            startActivity(intent)
+            false
+        }
     }
 
     override fun onCreateView(
@@ -67,7 +79,7 @@ class MapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_maps, container, false)
+        return inflater.inflate(R.layout.fragment_list_by_map, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
