@@ -10,6 +10,10 @@
     <string name="menu_find_by_look">見た目から探す</string>
     <string name="menu_find_by_facility">施設名から探す</string>
     <string name="title_activity_place_info">PlaceInfo</string>
+
+    <string name="place_info_picture">建物の外観</string>
+    <string name="place_info_usage_text">用途</string>
+    <string name="place_info_go_here_text">ここへ行く</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="large_text">

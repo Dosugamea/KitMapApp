@@ -17,13 +17,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kit.campus.map.PlaceInfoActivity
 import kit.campus.map.R
+import kit.campus.map.data.Place
+import kit.campus.map.data.PlaceList
 
 
 class ListByMapFragment : Fragment() {
-
-    private val placeList = mapOf(
-        "1号館" to LatLng(36.530205162894134, 136.62784554138173)
-    )
 
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
@@ -52,11 +50,11 @@ class ListByMapFragment : Fragment() {
         } else {
             googleMap.isMyLocationEnabled = true
         }
-        placeList.forEach { (k, v) ->
+        for (place in PlaceList.Data) {
             googleMap.addMarker(
                 MarkerOptions()
-                    .position(v)
-                    .title(k)
+                    .position(place.location)
+                    .title(place.name)
             )
         }
         googleMap.moveCamera(
@@ -66,10 +64,10 @@ class ListByMapFragment : Fragment() {
             )
         )
         googleMap.setOnMarkerClickListener { marker ->
-            val venueID = marker.id
-            val venueName = marker.title
-            val intent = Intent(activity, PlaceInfoActivity::class.java)
-            startActivity(intent)
+            val place: Place? = PlaceList.Data.find { it.name == marker.title }
+            val infoActivity = Intent(activity, PlaceInfoActivity::class.java)
+            infoActivity.putExtra("id", place?.id)
+            startActivity(infoActivity)
             false
         }
     }
