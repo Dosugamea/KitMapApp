@@ -3,6 +3,7 @@ package kit.campus.map
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,13 +22,27 @@ class PlaceInfoActivity : AppCompatActivity() {
         supportActionBar?.title = place?.name
         val usageBody: TextView = findViewById(R.id.usageBody)
         usageBody.text = place?.usage
+        usageBody.movementMethod = ScrollingMovementMethod()
+        val facilityBody: TextView = findViewById(R.id.facilityBody)
+        facilityBody.movementMethod = ScrollingMovementMethod()
+        facilityBody.text = place?.facilities?.reduce { tmp, value -> tmp + "\n" + value }
         val lookImage: ImageView = findViewById(R.id.lookImage)
-        lookImage.setImageResource(R.drawable.ic_menu_look)
+        if (place != null) {
+            lookImage.setImageResource(place.images[0])
+        }
         // マップを開くボタンに動作割当
         val mapBtn: Button = findViewById(R.id.openWithMap)
         mapBtn.setOnClickListener {
             val browserIntent =
-                Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"))
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(
+                        "https://www.google.com/maps/search/?api=1&query="
+                                + place?.location?.latitude.toString()
+                                + ","
+                                + place?.location?.longitude.toString()
+                    )
+                )
             startActivity(browserIntent)
         }
     }

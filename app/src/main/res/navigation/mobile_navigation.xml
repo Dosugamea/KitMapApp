@@ -3,29 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_find_by_no">
+    app:startDestination="@+id/nav_find_by_map">
 
     <fragment
-        android:id="@+id/nav_maps"
+        android:id="@+id/nav_find_by_map"
         android:name="kit.campus.map.ui.map.ListByMapFragment"
         android:label="@string/menu_find_by_map"
-        tools:layout="@layout/fragment_list_by_map" />
+        tools:layout="@layout/listview_layout" />
 
     <fragment
         android:id="@+id/nav_find_by_no"
-        android:name="kit.campus.map.ui.look.ListByLookFragment"
+        android:name="kit.campus.map.ui.no.ListByNoFragment"
         android:label="@string/menu_find_by_no"
-        tools:layout="@layout/fragment_list_by_look" />
+        tools:layout="@layout/listview_layout" />
 
     <fragment
         android:id="@+id/nav_find_by_look"
-        android:name="kit.campus.map.ui.no.ListByNoFragment"
+        android:name="kit.campus.map.ui.look.ListByLookFragment"
         android:label="@string/menu_find_by_look"
-        tools:layout="@layout/fragment_list_by_no" />
+        tools:layout="@layout/listview_layout" />
 
     <fragment
         android:id="@+id/nav_find_by_facility"
         android:name="kit.campus.map.ui.facility.ListByFacilityFragment"
         android:label="@string/menu_find_by_facility"
-        tools:layout="@layout/fragment_list_by_facility" />
+        tools:layout="@layout/listview_layout" />
 </navigation>

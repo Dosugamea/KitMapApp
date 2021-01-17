@@ -1,21 +1,35 @@
 package kit.campus.map.ui.look
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import kit.campus.map.R
+import android.widget.ListView
+import androidx.fragment.app.ListFragment
+import kit.campus.map.PlaceInfoActivity
+import kit.campus.map.data.PlaceList
 
-class ListByLookFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+class ListByLookFragment : ListFragment() {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        // アダプタを生成
+        val adapter = context?.let {
+            ImageListAdapter(
+                it,
+                PlaceList.Data
+            )
+        }
+        // リストビューにアダプタをセット
+        listAdapter = adapter
+    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_list_by_look, container, false)
+    override fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {
+        val placeId: Int = PlaceList.Data[position].id
+        val infoActivity = Intent(
+            context,
+            PlaceInfoActivity::class.java
+        )
+        infoActivity.putExtra("id", placeId)
+        startActivity(infoActivity)
     }
 }

@@ -8,6 +8,6 @@ class Place(
     val location: LatLng,
     val usage: String,
     val facilities: Array<String>,
-    val images: Array<String>
+    val images: Array<Int>
 ) {
 }

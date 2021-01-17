@@ -55,7 +55,7 @@ class ListByMapFragment : Fragment() {
                 MarkerOptions()
                     .position(place.location)
                     .title(place.name)
-            )
+            ).showInfoWindow()
         }
         googleMap.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
