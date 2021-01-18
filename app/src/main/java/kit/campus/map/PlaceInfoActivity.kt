@@ -4,11 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kit.campus.map.data.PlaceList
+
 
 class PlaceInfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +22,8 @@ class PlaceInfoActivity : AppCompatActivity() {
         val place = PlaceList.Data.find { it.id == placeId }
         // 場所情報に応じて内容変更
         supportActionBar?.title = place?.name
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_back)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val usageBody: TextView = findViewById(R.id.usageBody)
         usageBody.text = place?.usage
         usageBody.movementMethod = ScrollingMovementMethod()
@@ -44,6 +48,16 @@ class PlaceInfoActivity : AppCompatActivity() {
                     )
                 )
             startActivity(browserIntent)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

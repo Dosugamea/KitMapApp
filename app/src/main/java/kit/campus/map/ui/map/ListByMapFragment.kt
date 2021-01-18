@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.*
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +14,11 @@ import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kit.campus.map.PlaceInfoActivity
 import kit.campus.map.R
-import kit.campus.map.data.Place
 import kit.campus.map.data.PlaceList
 
 
@@ -51,11 +52,25 @@ class ListByMapFragment : Fragment() {
             googleMap.isMyLocationEnabled = true
         }
         for (place in PlaceList.Data) {
-            googleMap.addMarker(
+            val bmp = Bitmap.createBitmap(160, 80, Bitmap.Config.ARGB_8888)
+            val canvas1 = Canvas(bmp)
+            val color = Paint()
+            val rect: Rect = Rect(0, 0, 160, 80)
+            rect.offset(0, 0)
+            color.textSize = 42F
+            color.color = Color.BLACK
+            val colorWhite = Paint()
+            colorWhite.color = Color.WHITE
+            canvas1.drawRect(rect, colorWhite)
+            canvas1.drawText(place.name, 30F, 40F, color)
+
+            val marker = googleMap.addMarker(
                 MarkerOptions()
                     .position(place.location)
-                    .title(place.name)
-            ).showInfoWindow()
+                    .title("タップで情報を見る")
+                    .icon(BitmapDescriptorFactory.fromBitmap(bmp))
+            )
+            marker.tag = place.id
         }
         googleMap.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
@@ -63,10 +78,9 @@ class ListByMapFragment : Fragment() {
                 17.0f
             )
         )
-        googleMap.setOnMarkerClickListener { marker ->
-            val place: Place? = PlaceList.Data.find { it.name == marker.title }
+        googleMap.setOnInfoWindowClickListener { marker ->
             val infoActivity = Intent(activity, PlaceInfoActivity::class.java)
-            infoActivity.putExtra("id", place?.id)
+            infoActivity.putExtra("id", marker.tag as Int)
             startActivity(infoActivity)
             false
         }
